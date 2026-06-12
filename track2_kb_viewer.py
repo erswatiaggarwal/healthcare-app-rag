@@ -20,11 +20,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # On Streamlit Community Cloud, secrets live in st.secrets (not .env).
-# Copy them into os.environ so every os.getenv() call in this file and
-# in track2_retrieval_engine / track2_clinical_agent works unchanged.
-for _k, _v in st.secrets.items():
-    if isinstance(_v, str):
-        os.environ.setdefault(_k, _v)
+# Locally, .env is used instead — only copy secrets when they're available.
+try:
+    for _k, _v in st.secrets.items():
+        if isinstance(_v, str):
+            os.environ.setdefault(_k, _v)
+except Exception:
+    pass
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
